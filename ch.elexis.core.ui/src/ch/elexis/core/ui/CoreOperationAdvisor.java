@@ -90,7 +90,7 @@ public class CoreOperationAdvisor extends AbstractCoreOperationAdvisor {
 				log.error("Authentication failed. Exiting");
 			}
 		} else {
-			LoginDialog dlg = new LoginDialog((Shell) shell);
+			LoginDialog dlg = new LoginDialog((Shell) shell, username);
 			dlg.create();
 			dlg.getShell().setText(Messages.LoginDialog_loginHeader);
 			dlg.setTitle(Messages.LoginDialog_notLoggedIn);

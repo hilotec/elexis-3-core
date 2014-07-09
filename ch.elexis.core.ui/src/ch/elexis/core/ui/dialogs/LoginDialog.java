@@ -40,16 +40,22 @@ import ch.rgw.tools.ExHandler;
 public class LoginDialog extends TitleAreaDialog {
 	Text usr, pwd;
 	boolean hasUsers;
+	String username;
 	ButtonEnabler be = new ButtonEnabler();
 	
-	public LoginDialog(Shell parentShell){
+	public LoginDialog(Shell parentShell) {
+		this(parentShell, null);
+	}
+
+	public LoginDialog(Shell parentShell, String username){
 		super(parentShell);
 		
+		this.username = username;
 		Query<Anwender> qbe = new Query<Anwender>(Anwender.class);
 		List<Anwender> list = qbe.execute();
 		hasUsers = (list.size() > 1);
 	}
-	
+
 	@Override
 	protected Control createDialogArea(Composite parent){
 		Composite ret = new Composite(parent, SWT.NONE);
@@ -63,11 +69,15 @@ public class LoginDialog extends TitleAreaDialog {
 		new Label(ret, SWT.NONE).setText(Messages.LoginDialog_1);
 		pwd = new Text(ret, SWT.BORDER | SWT.PASSWORD);
 		pwd.setLayoutData(SWTHelper.getFillGridData(1, true, 1, false));
+		if (username != null) {
+			usr.setText(username);
+			pwd.forceFocus();
+		}
 		if (hasUsers == false) {
 			usr.setText("Administrator"); //$NON-NLS-1$
 			pwd.setText("admin"); //$NON-NLS-1$
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		List<ILoginNews> newsModules =
 			Extensions.getClasses(ExtensionPointConstantsUi.LOGIN_NEWS, "class");
